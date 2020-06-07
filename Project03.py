@@ -34,8 +34,12 @@ def readFile(fileName):
                 temp += '<--'+ level + '|' + tag + '|' + 'N' + '|' + arguments
                 x = '<--'+ level + '|' + tag + '|' + 'N' + '|' + arguments
                 #print('<--', level + '|' + tag + '|' + 'N' + '|' + arguments)
+                try:
+                    tag == 0
+                except ValueError:
+                    print('Invalid line')
                 #raise Exception('Invalid line: {}'.format(x))
-                print('Invalid line: ' + x)
+                #print('Invalid line: ' + x)
             else:
                 if arguments == 'INDI' or arguments == 'FAM':
                     tag, arguments = arguments, tag
@@ -43,8 +47,8 @@ def readFile(fileName):
                 #print('<--', level + '|' + tag + '|' + isValid(level,tag) + '|' + arguments)
                 if isValid(level, tag) == 'N':
                     x = '<--'+ level + '|' + tag + '|' + isValid(level,tag) + '|' + arguments
-                    #raise Exception('Invalid line: {}'.format(x))
-                    print('Invalid line: ' + x)
+                    raise Exception('Invalid line: {}'.format(x))
+                    #print('Invalid line: ' + x)
                 if isValid(level,tag) == 'Y':
                     if tag == 'INDI':
                         addIndividual(tag, arguments)
@@ -81,28 +85,28 @@ def addIndividual(tag, arguments):
     if he/she already exists in the dictionary'''
     global current_indi_id
     if tag == 'INDI':
-        INDI_IDS[arguments] = ['NA','NA','NA','NA','NA','True','NA','NA', 'NA']
+        INDI_IDS[arguments] = ['NA','NA','NA','NA','True','NA','NA','NA']
         current_indi_id = arguments
     elif tag == 'NAME':
         INDI_IDS[current_indi_id][0] = arguments
     elif tag == 'SEX':
         INDI_IDS[current_indi_id][1] = arguments
     elif tag == 'BIRT':
-        INDI_IDS[current_indi_id][3] = arguments
-        INDI_IDS[current_indi_id][4] = str(calculateAge(arguments))
+        INDI_IDS[current_indi_id][2] = arguments
+        INDI_IDS[current_indi_id][3] = str(calculateAge(arguments))
     elif tag == 'DEAT':
-        INDI_IDS[current_indi_id][5] = 'False'
-        INDI_IDS[current_indi_id][6] = arguments
+        INDI_IDS[current_indi_id][4] = 'False'
+        INDI_IDS[current_indi_id][5] = arguments
     elif tag == 'FAMC':
+        if INDI_IDS[current_indi_id][6] == 'NA':
+            INDI_IDS[current_indi_id][6] = [arguments]
+        else:
+            INDI_IDS[current_indi_id][6] += [arguments]
+    elif tag == 'FAMS':
         if INDI_IDS[current_indi_id][7] == 'NA':
             INDI_IDS[current_indi_id][7] = [arguments]
         else:
             INDI_IDS[current_indi_id][7] += [arguments]
-    elif tag == 'FAMS':
-        if INDI_IDS[current_indi_id][8] == 'NA':
-            INDI_IDS[current_indi_id][8] = [arguments]
-        else:
-            INDI_IDS[current_indi_id][8] += [arguments]
 
 def addFamily(tag, arguments):
     '''Adds a new family to the dictionary FAM_IDS or adds information about the family
@@ -150,7 +154,7 @@ def individualsTable():
     # individuals.sort(key=lambda x: int(x.i_id[1:])
     for id in sorted(INDI_IDS.keys()):
         # indi_table.add_row(INDI_IDS[id].))
-        indi_table.add_row([id, INDI_IDS[id][0], INDI_IDS[id][1], INDI_IDS[id][3], INDI_IDS[id][4], INDI_IDS[id][5], INDI_IDS[id][6], INDI_IDS[id][7], INDI_IDS[id][8]])
+        indi_table.add_row([id, INDI_IDS[id][0], INDI_IDS[id][1], INDI_IDS[id][2], INDI_IDS[id][3], INDI_IDS[id][4], INDI_IDS[id][5], INDI_IDS[id][6], INDI_IDS[id][7]])
     print('Individuals')
     # lister = sorted(indi_table, key=lambda x: x)
     print(indi_table)
@@ -160,10 +164,19 @@ def familiesTable():
     '''Printing Families Table'''
     fam_table = PrettyTable()
     fam_table.field_names = ['ID', 'Married', 'Divorced', 'Husband ID', 'Husband Name', 'Wife ID', 'Wife Name', 'Children']
-    for id in FAM_IDS:
+    for id in sorted(FAM_IDS.keys()):
         fam_table.add_row([id, FAM_IDS[id][0], FAM_IDS[id][1], FAM_IDS[id][2], FAM_IDS[id][3], FAM_IDS[id][4], FAM_IDS[id][5], FAM_IDS[id][6]])
     print('Families')
     print(fam_table)
+
+def inOrder(dict):
+    keys = []
+    for key in dict.keys():
+        keys += key
+    for key in keys:
+        for x in key:
+            ''.join(str(ord(x)) for x in key)
+    
 
 def main():
     readFile(INPUT_FILE)
@@ -173,8 +186,5 @@ def main():
     #     print(fam + ': ' + str(FAM_IDS[fam]))
     individualsTable()
     familiesTable()
-    #MAKE SURE YOU SORT ALPHABETICALLY
-    #indi_table = PrettyTable(['ID','Name','Gender','Birthday','Age','Alive','Death','Child','Spouse'])
-    #fam_table = PrettyTable(['ID','Married','Divorced','Husband ID','Husband Name','Wife ID','Wife Name','Children'])
 
 if __name__ == '__main__': main()
