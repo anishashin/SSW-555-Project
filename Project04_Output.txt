@@ -1,0 +1,38 @@
+People
++--------------+-----------------+--------+-------------+-----+-------+-------------+------------------+----------------------------------+
+|      ID      |       Name      | Gender |   Birthday  | Age | Alive |    Death    |      Child       |              Spouse              |
++--------------+-----------------+--------+-------------+-----+-------+-------------+------------------+----------------------------------+
+|     I03      |  Talia /Bieber/ |   F    | 24 MAY 2020 |  0  |  True |      NA     | ['US01US02_F01'] |                NA                |
+|     I04      |   Renu /Shin/   |   F    | 15 JAN 1971 |  49 |  True |      NA     |   ['US02_F04']   |           ['US04_F02']           |
+|     I05      |  HoChul /Shin/  |   M    | 23 SEP 1967 |  52 |  True |      NA     |        NA        |           ['US04_F02']           |
+|     I06      |   Devin /Shin/  |   M    | 17 JUL 2002 |  17 |  True |      NA     |   ['US04_F02']   |                NA                |
+|     I07      |  Dillon /Shin/  |   M    | 17 JUL 2002 |  17 |  True |      NA     |   ['US04_F02']   |                NA                |
+|     I09      | Kalani /Bieber/ |   F    | 14 SEP 2018 |  1  |  True |      NA     | ['US01US02_F03'] |                NA                |
+|     I10      |   Sudesh /Lal/  |   F    | 15 JAN 1943 |  77 |  True |      NA     |        NA        |           ['US02_F04']           |
+|     I12      |    Puja /Lal/   |   F    | 25 FEB 1983 |  37 | False | 27 SEP 2019 |   ['US02_F04']   |                NA                |
+| US01US03_I11 |   Tarsem /Lal/  |   M    |  1 JAN 2035 | -15 | False | 26 APR 1995 |        NA        |           ['US02_F04']           |
+|   US01_I01   |  Anisha /Shin/  |   F    |  2 AUG 2021 |  -2 |  True |      NA     |   ['US04_F02']   |         ['US01US02_F01']         |
+|   US01_I02   | Justin /Bieber/ |   M    |  1 MAR 2094 | -74 |  True |      NA     |        NA        | ['US01US02_F01', 'US01US02_F03'] |
+|   US01_I08   | Hailey /Bieber/ |   F    | 22 NOV 1996 |  23 | False | 22 AUG 2020 |        NA        |         ['US01US02_F03']         |
++--------------+-----------------+--------+-------------+-----+-------+-------------+------------------+----------------------------------+
+Families
++--------------+-------------+-------------+--------------+-----------------+----------+-----------------+----------------------------+
+|      ID      |   Married   |   Divorced  |  Husband ID  |   Husband Name  | Wife ID  |    Wife Name    |          Children          |
++--------------+-------------+-------------+--------------+-----------------+----------+-----------------+----------------------------+
+| US01US02_F01 | 23 MAY 2020 | 27 AUG 2020 |   US01_I02   | Justin /Bieber/ | US01_I01 |  Anisha /Shin/  |          ['I03']           |
+| US01US02_F03 | 13 SEP 2022 |      NA     |   US01_I02   | Justin /Bieber/ | US01_I08 | Hailey /Bieber/ |          ['I09']           |
+|   US02_F04   | 23 OCT 1969 |      NA     | US01US03_I11 |   Tarsem /Lal/  |   I10    |   Sudesh /Lal/  |       ['I04', 'I12']       |
+|   US04_F02   | 29 NOV 1997 | 29 NOV 1995 |     I05      |  HoChul /Shin/  |   I04    |   Renu /Shin/   | ['US01_I01', 'I06', 'I07'] |
++--------------+-------------+-------------+--------------+-----------------+----------+-----------------+----------------------------+
+ERROR: INDIVIDUAL: US01: US01_I01: Birthday 2021-08-02 occurs in the future
+ERROR: INDIVIDUAL: US01: US01_I02: Birthday 2094-03-01 occurs in the future
+ERROR: INDIVIDUAL: US01: US01_I08: Death 2020-08-22 occurs in the future
+ERROR: INDIVIDUAL: US01: US01US03_I11: Birthday 2035-01-01 occurs in the future
+ERROR: INDIVIDUAL: US03: US01US03_I11: Died 1995-04-26 before born 2035-01-01
+ERROR: FAMILY: US02: US01US02_F01: Husband's birth date 2094-03-01 after marriage date 2020-05-23
+ERROR: FAMILY: US02: US01US02_F01: Wife's birth date 2021-08-02 after marriage date 2020-05-23
+ERROR: FAMILY: US01: US01US02_F01: Divorce date 2020-08-27 occurs in the future
+ERROR: FAMILY: US04: US04_F02: Divorced 1995-11-29 before married 1997-11-29
+ERROR: FAMILY: US01: US01US02_F03: Marriage date 2022-09-13 occurs in the future
+ERROR: FAMILY: US02: US01US02_F03: Husband's birth date 2094-03-01 after marriage date 2022-09-13
+ERROR: FAMILY: US02: US02_F04: Husband's birth date 2035-01-01 after marriage date 1969-10-23
