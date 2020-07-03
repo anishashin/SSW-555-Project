@@ -2,7 +2,7 @@ from datetime import date
 from prettytable import PrettyTable
 import operator
 
-INPUT_FILE = 'test_file.ged'
+INPUT_FILE = 'Project06_test.ged'
 INDI_IDS = {}
 FAM_IDS = {}
 
@@ -250,6 +250,48 @@ def us08BirthBeforeMarriageOfParents(id_name):
                 error_messages += ['ANOMALY: FAMILY: US08: ' + id_name + ': Child ' + child_id + ' born ' + str(birthday) + ' after divorce on ' + str(divorce)]
     return error_messages
 
+def us09BirthBeforeDeathOfParents(id_name):
+    '''Retuns an error message if the birth of a child comes before the death of the parents'''
+    error_messages = []
+    marriage = FAM_IDS[id_name][0]
+    if marriage != 'NA':
+        marriage_date = convertToDate(marriage)
+    for child_id in FAM_IDS[id_name][6]:
+        birthday = INDI_IDS[child_id][2]
+        birth_date = convertToDate(birthday)
+        father_id = FAM_IDS[id_name][2]
+        mother_id = FAM_IDS[id_name][4]
+        father_death = INDI_IDS[father_id][5]
+        mother_death = INDI_IDS[mother_id][5]
+        if father_death != 'NA':
+            if birthday > father_death:
+                if not datesWithinLimit(birth_date, father_death, 9, 'months'):
+                #confused how to word this!
+                    error_messages += ['ERROR: FAMILY: US09: ' + id_name + ': child '+ child_id + ' born ' + str(birth_date) + ' after 9 months after death of father ' + str(father_death)]
+        if mother_death != 'NA':
+            if birthday > mother_death:
+                error_messages += ['ERROR: FAMILY: US09: ' + id_name + ': child ' + child_id + ' born ' + str(birth_date) + ' after death of mother ' + str(mother_death)]
+    return error_messages
+
+def us10MarriageAfter14(id_name):
+    '''Returns an error message if the marriage of both parents isnt more than 14 years after their birth'''
+    error_messages = []
+    marriage = FAM_IDS[id_name][0]
+    if marriage != 'NA':
+        marriage_date = convertToDate(marriage)
+    husband_id = FAM_IDS[id_name][2]
+    husband_birthday = INDI_IDS[husband_id][2]
+    husband_birthDate = convertToDate(husband_birthday)
+
+    wife_id = FAM_IDS[id_name][4]
+    wife_birthday = INDI_IDS[wife_id][2]
+    wife_birthDate = convertToDate(wife_birthday)
+    if datesWithinLimit(husband_birthDate, marriage_date, 14, 'years'):
+        error_messages += ['ERROR: FAMILY: US10: ' + id_name + ': husband ' + husband_id + ' not married ' + str(marriage_date) + ' at least 14 years after birth ' + str(husband_birthDate)]
+    if datesWithinLimit(wife_birthDate, marriage_date, 14, 'years'):
+        error_messages += ['ERROR: FAMILY: US10: ' + id_name + ': wife ' + wife_id + ' not married ' + str(marriage_date) + ' at least 14 years after birth ' + str(wife_birthDate)]
+    return error_messages
+
 def main():
     readFile(INPUT_FILE)
     individualsTable()
@@ -281,10 +323,16 @@ def main():
             if us08BirthBeforeMarriageOfParents(id_name) != []:
                 for error_message in us08BirthBeforeMarriageOfParents(id_name):
                     print(error_message)
+            if us09BirthBeforeDeathOfParents(id_name) != []:
+                for error_message in us09BirthBeforeDeathOfParents(id_name):
+                    print(error_message)
             
             if FAM_IDS[id_name][2] != 'NA' and FAM_IDS[id_name][4] != 'NA':
                 if us02BirthBeforeMarriage(marr, id_name) != []:
                     for error_message in us02BirthBeforeMarriage(marr, id_name):
+                        print(error_message)
+                if us10MarriageAfter14(id_name) != []:
+                    for error_message in us10MarriageAfter14(id_name):
                         print(error_message)
 
         if FAM_IDS[id_name][1] != 'NA':
