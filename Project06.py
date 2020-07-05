@@ -259,18 +259,23 @@ def us09BirthBeforeDeathOfParents(id_name):
     for child_id in FAM_IDS[id_name][6]:
         birthday = INDI_IDS[child_id][2]
         birth_date = convertToDate(birthday)
+
         father_id = FAM_IDS[id_name][2]
         mother_id = FAM_IDS[id_name][4]
-        father_death = INDI_IDS[father_id][5]
-        mother_death = INDI_IDS[mother_id][5]
-        if father_death != 'NA':
-            if birthday > father_death:
-                if not datesWithinLimit(birth_date, father_death, 9, 'months'):
+
+        fatherDeath = INDI_IDS[father_id][5]
+        motherDeath = INDI_IDS[mother_id][5]
+
+        if fatherDeath != 'NA':
+            father_death = convertToDate(fatherDeath)
+            if birth_date > father_death:
+                if not datesWithinLimit(father_death, birth_date, 9, 'months'):
                 #confused how to word this!
-                    error_messages += ['ERROR: FAMILY: US09: ' + id_name + ': child '+ child_id + ' born ' + str(birth_date) + ' after 9 months after death of father ' + str(father_death)]
-        if mother_death != 'NA':
-            if birthday > mother_death:
-                error_messages += ['ERROR: FAMILY: US09: ' + id_name + ': child ' + child_id + ' born ' + str(birth_date) + ' after death of mother ' + str(mother_death)]
+                    error_messages += ['ERROR: FAMILY: US09: ' + id_name + ': Child '+ child_id + ' born ' + str(birth_date) + ' more than 9 months after death of father ' + str(father_death)]
+        if motherDeath != 'NA':
+            mother_death = convertToDate(motherDeath)
+            if birth_date > mother_death:
+                error_messages += ['ERROR: FAMILY: US09: ' + id_name + ': Child ' + child_id + ' born ' + str(birth_date) + ' after death of mother ' + str(mother_death)]
     return error_messages
 
 def us10MarriageAfter14(id_name):
@@ -287,9 +292,9 @@ def us10MarriageAfter14(id_name):
     wife_birthday = INDI_IDS[wife_id][2]
     wife_birthDate = convertToDate(wife_birthday)
     if datesWithinLimit(husband_birthDate, marriage_date, 14, 'years'):
-        error_messages += ['ERROR: FAMILY: US10: ' + id_name + ': husband ' + husband_id + ' not married ' + str(marriage_date) + ' at least 14 years after birth ' + str(husband_birthDate)]
+        error_messages += ['ERROR: FAMILY: US10: ' + id_name + ': Husband ' + husband_id + ' not married ' + str(marriage_date) + ' at least 14 years after birth ' + str(husband_birthDate)]
     if datesWithinLimit(wife_birthDate, marriage_date, 14, 'years'):
-        error_messages += ['ERROR: FAMILY: US10: ' + id_name + ': wife ' + wife_id + ' not married ' + str(marriage_date) + ' at least 14 years after birth ' + str(wife_birthDate)]
+        error_messages += ['ERROR: FAMILY: US10: ' + id_name + ': Wife ' + wife_id + ' not married ' + str(marriage_date) + ' at least 14 years after birth ' + str(wife_birthDate)]
     return error_messages
 
 def main():
