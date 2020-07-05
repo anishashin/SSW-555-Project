@@ -7,6 +7,8 @@ from Project06 import us03BirthBeforeDeath
 from Project06 import us04MarriageBeforeDivorce
 from Project06 import us07LessThan150YearsOld
 from Project06 import us08BirthBeforeMarriageOfParents
+from Project06 import us09BirthBeforeDeathOfParents
+from Project06 import us10MarriageAfter14
 
 class Test(unittest.TestCase):
 
@@ -27,16 +29,17 @@ class Test(unittest.TestCase):
 
     def test07(self):
         self.assertEqual(us07LessThan150YearsOld('US07_I05'), ['ERROR: INDIVIDUAL: US07: US07_I05: More than 150 years old - Birth date 1867-09-23'])
-        self.assertEqual(us07LessThan150YearsOld('US07_I10'), ['ERROR: INDIVIDUAL: US07: US07_I10: More than 150 years old - Birth date 1843-01-15', 'ERROR: INDIVIDUAL: US07: US07_I10: More than 150 years old at death - Birth 1843-01-15: Death 2020-06-30'])
+        self.assertEqual(us07LessThan150YearsOld('US07_I10'), ['ERROR: INDIVIDUAL: US07: US07_I10: More than 150 years old - Birth date 1843-01-15', 'ERROR: INDIVIDUAL: US07: US07_I10: More than 150 years old at death - Birth 1843-01-15: Death 2019-06-30'])
 
     def test08(self):
         self.assertEqual(us08BirthBeforeMarriageOfParents('US01US02US08_F03'), ['ANOMALY: FAMILY: US08: US01US02US08_F03: Child I09 born 2018-09-14 before marriage on 2022-09-13'])
 
     def test09(self):
-        pass
+        self.assertEqual(us09BirthBeforeDeathOfParents('US02_F04'), ['ERROR: FAMILY: US09: US02_F04: Child I04 born 2020-01-15 more than 9 months after death of father 1995-04-26', 'ERROR: FAMILY: US09: US02_F04: Child I04 born 2020-01-15 after death of mother 2019-06-30', 'ERROR: FAMILY: US09: US02_F04: Child I12 born 1996-02-26 more than 9 months after death of father 1995-04-26'])
 
     def test10(self):
-        pass
+        self.assertEqual(us10MarriageAfter14('US04US08_F02'), ['ERROR: FAMILY: US10: US04US08_F02: Wife I04 not married 1997-11-29 at least 14 years after birth 2020-01-15'])
+        self.assertEqual(us10MarriageAfter14('US01US02US08_F03'), ['ERROR: FAMILY: US10: US01US02US08_F03: Husband US01_I02 not married 2022-09-13 at least 14 years after birth 2094-03-01'])
 
 if __name__ == "__main__":
     Project06.main()
