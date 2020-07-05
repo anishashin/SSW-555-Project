@@ -270,7 +270,7 @@ def us09BirthBeforeDeathOfParents(id_name):
             father_death = convertToDate(fatherDeath)
             if birth_date > father_death:
                 if not datesWithinLimit(father_death, birth_date, 9, 'months'):
-                #confused how to word this!
+                
                     error_messages += ['ERROR: FAMILY: US09: ' + id_name + ': Child '+ child_id + ' born ' + str(birth_date) + ' more than 9 months after death of father ' + str(father_death)]
         if motherDeath != 'NA':
             mother_death = convertToDate(motherDeath)
