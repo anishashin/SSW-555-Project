@@ -6,6 +6,9 @@ import operator
 INPUT_FILE = 'test_file.ged'
 INDI_IDS = {}
 FAM_IDS = {}
+count = 0
+count1 = 0
+
 
 VALID_TAGS = {'0':('INDI','FAM','HEAD','TRLR','NOTE'),
               '1':('NAME','SEX','BIRT','DEAT','FAMC','FAMS','MARR','HUSB','WIFE','CHIL','DIV'),
@@ -79,6 +82,10 @@ def isValid(level,tag):
 def addIndividual(tag, arguments):
     '''Adds a new individual to the dictionary INDI_IDS or adds information about the individual
     if he/she already exists in the dictionary'''
+    global count
+    if arguments in INDI_IDS.keys():
+        arguments += '-Not Unique ' + str(count)
+        count += 1
     global current_indi_id
     if tag == 'INDI':
         INDI_IDS[arguments] = ['NA','NA','NA','NA','True','NA','NA','NA']
@@ -107,6 +114,10 @@ def addIndividual(tag, arguments):
 def addFamily(tag, arguments):
     '''Adds a new family to the dictionary FAM_IDS or adds information about the family
     if it already exists in the dictionary'''
+    global count1
+    if arguments in FAM_IDS.keys():
+        arguments += '-Not Unique ' + str(count1)
+        count1 += 1
     global current_fam_id
     if tag == 'FAM':
         FAM_IDS[arguments] = ['NA','NA','NA','NA','NA','NA','NA']
@@ -227,11 +238,11 @@ def us07LessThan150YearsOld(id_name):
     error_messages = []
     birthday = convertToDate(INDI_IDS[id_name][2])
     if not datesWithinLimit(birthday, date.today(), 150, 'years'):
-        error_messages += ['ERROR: INDIVIDUAL: US07: ' + id_name + ': More than 150 years old - Birth date ' + str(birthday)]
+        error_messages.append('ERROR: INDIVIDUAL: US07: ' + id_name + ': More than 150 years old - Birth date ' + str(birthday))
     if INDI_IDS[id_name][5] != 'NA':
         death = convertToDate(INDI_IDS[id_name][5])
         if not datesWithinLimit(birthday, death, 150, 'years'):
-            error_messages += ['ERROR: INDIVIDUAL: US07: ' + id_name + ': More than 150 years old at death - Birth ' + str(birthday) + ': Death ' + str(death)]
+            error_messages.append('ERROR: INDIVIDUAL: US07: ' + id_name + ': More than 150 years old at death - Birth ' + str(birthday) + ': Death ' + str(death))
     return error_messages
 
 def us08BirthBeforeMarriageOfParents(id_name):
@@ -239,16 +250,18 @@ def us08BirthBeforeMarriageOfParents(id_name):
     or if an individual was born more than 9 months after his/her parents' divorce'''
     error_messages = []
     marriage = convertToDate(FAM_IDS[id_name][0])
-    for child_id in FAM_IDS[id_name][6]:
-        birthday = convertToDate(INDI_IDS[child_id][2])
-        if birthday < marriage:
-            error_messages += ['ANOMALY: FAMILY: US08: ' + id_name + ': Child ' + child_id + ' born ' + str(birthday) + ' before marriage on ' + str(marriage)]
-    if FAM_IDS[id_name][1] != 'NA':
-        divorce = convertToDate(FAM_IDS[id_name][1])
+    if FAM_IDS[id_name][6] != 'NA':
         for child_id in FAM_IDS[id_name][6]:
             birthday = convertToDate(INDI_IDS[child_id][2])
-            if not datesWithinLimit(divorce, birthday, 9, 'months'):
-                error_messages += ['ANOMALY: FAMILY: US08: ' + id_name + ': Child ' + child_id + ' born ' + str(birthday) + ' after divorce on ' + str(divorce)]
+            if birthday < marriage:
+                error_messages.append('ANOMALY: FAMILY: US08: ' + id_name + ': Child ' + child_id + ' born ' + str(birthday) + ' before marriage on ' + str(marriage))
+    if FAM_IDS[id_name][1] != 'NA':
+        divorce = convertToDate(FAM_IDS[id_name][1])
+        if FAM_IDS[id_name][6] != 'NA':
+            for child_id in FAM_IDS[id_name][6]:
+                birthday = convertToDate(INDI_IDS[child_id][2])
+                if not datesWithinLimit(divorce, birthday, 9, 'months'):
+                    error_messages.append('ANOMALY: FAMILY: US08: ' + id_name + ': Child ' + child_id + ' born ' + str(birthday) + ' after divorce on ' + str(divorce))
     return error_messages
 
 def us09BirthBeforeDeathOfParents(id_name):
@@ -257,26 +270,28 @@ def us09BirthBeforeDeathOfParents(id_name):
     marriage = FAM_IDS[id_name][0]
     if marriage != 'NA':
         marriage_date = convertToDate(marriage)
-    for child_id in FAM_IDS[id_name][6]:
-        birthday = INDI_IDS[child_id][2]
-        birth_date = convertToDate(birthday)
+    
+    if FAM_IDS[id_name][6] != 'NA':
+        for child_id in FAM_IDS[id_name][6]:
+            birthday = INDI_IDS[child_id][2]
+            birth_date = convertToDate(birthday)
 
-        father_id = FAM_IDS[id_name][2]
-        mother_id = FAM_IDS[id_name][4]
+            father_id = FAM_IDS[id_name][2]
+            mother_id = FAM_IDS[id_name][4]
 
-        fatherDeath = INDI_IDS[father_id][5]
-        motherDeath = INDI_IDS[mother_id][5]
+            fatherDeath = INDI_IDS[father_id][5]
+            motherDeath = INDI_IDS[mother_id][5]
 
-        if fatherDeath != 'NA':
-            father_death = convertToDate(fatherDeath)
-            if birth_date > father_death:
-                if not datesWithinLimit(father_death, birth_date, 9, 'months'):
+            if fatherDeath != 'NA':
+                father_death = convertToDate(fatherDeath)
+                if birth_date > father_death:
+                    if not datesWithinLimit(father_death, birth_date, 9, 'months'):
 
-                    error_messages += ['ERROR: FAMILY: US09: ' + id_name + ': Child '+ child_id + ' born ' + str(birth_date) + ' more than 9 months after death of father ' + str(father_death)]
-        if motherDeath != 'NA':
-            mother_death = convertToDate(motherDeath)
-            if birth_date > mother_death:
-                error_messages += ['ERROR: FAMILY: US09: ' + id_name + ': Child ' + child_id + ' born ' + str(birth_date) + ' after death of mother ' + str(mother_death)]
+                        error_messages.append('ERROR: FAMILY: US09: ' + id_name + ': Child '+ child_id + ' born ' + str(birth_date) + ' more than 9 months after death of father ' + str(father_death))
+            if motherDeath != 'NA':
+                mother_death = convertToDate(motherDeath)
+                if birth_date > mother_death:
+                    error_messages.append('ERROR: FAMILY: US09: ' + id_name + ': Child ' + child_id + ' born ' + str(birth_date) + ' after death of mother ' + str(mother_death))
     return error_messages
 
 def us10MarriageAfter14(id_name):
@@ -312,14 +327,46 @@ def us16MaleLastNames(id_name):
     husband_list = husband_name.split('/')
     husband_surname = husband_list[1]
 
-    for child_id in FAM_IDS[id_name][6]:
-        gender = INDI_IDS[child_id][1]
-        if gender == 'M':
-            child_name = INDI_IDS[child_id][0]
-            child_list = child_name.split('/')
-            child_surname = child_list[1]
-            if child_surname != husband_surname:
-                error_messages += ['ERROR: FAMILY: US16: ' + id_name + ': Child ' + child_id + ' has a different last name than father']
+    if FAM_IDS[id_name][6] != 'NA':
+        for child_id in FAM_IDS[id_name][6]:
+            gender = INDI_IDS[child_id][1]
+            if gender == 'M':
+                child_name = INDI_IDS[child_id][0]
+                child_list = child_name.split('/')
+                child_surname = child_list[1]
+                if child_surname != husband_surname:
+                    error_messages.append('ERROR: FAMILY: US16: ' + id_name + ': Child ' + child_id + ' has a different last name than father')
+    return error_messages
+
+def us21CorrectGenderForRoles(id_name):
+    '''Returns an error message if the husband in the family is not male and if the wife in the family is not female'''
+    error_messages = []
+    husband_id = FAM_IDS[id_name][2]
+    husband_gender = INDI_IDS[husband_id][1]
+
+    wife_id = FAM_IDS[id_name][4]
+    wife_gender = INDI_IDS[wife_id][1]
+
+    if husband_gender != 'M':
+        error_messages.append('ERROR: FAMILY: US21: ' + id_name + ': husband ' + husband_id + ' is not male')
+
+    if wife_gender != 'F':
+        error_messages.append('ERROR: FAMILY: US21: ' + id_name + ': wife ' + wife_id + ' is not female')
+
+    return error_messages
+
+def us22UniqueIDs(id_name):
+    '''Returns an error message if all individual IDs are not unique and if all family IDs are not unique'''
+    error_messages = []
+
+    for id in FAM_IDS.keys():
+        if '-Not Unique' in id and id == id_name:    
+            error_messages.append('ERROR: FAMILY: US22: ' + id_name + ': is not unique: The Not Unique indicates this')
+
+    for id in INDI_IDS.keys():
+        if '-Not Unique' in id and id == id_name:
+            error_messages.append('ERROR: INDIVIDUAL: US22: ' + id_name + ': is not unique: The Not Unique indicates this')          
+
     return error_messages
 
 def main():
@@ -332,8 +379,10 @@ def main():
             birt = INDI_IDS[id_name][2]
             if us01DatesBeforeCurrentDate(birt, id_name, 'INDIVIDUAL', 'Birthday') != None:
                 print(us01DatesBeforeCurrentDate(birt, id_name, 'INDIVIDUAL', 'Birthday'))
+
             if us03BirthBeforeDeath(id_name) != None:
                 print(us03BirthBeforeDeath(id_name))
+
             if us07LessThan150YearsOld(id_name) != []:
                 for error_message in us07LessThan150YearsOld(id_name):
                     print(error_message)
@@ -342,6 +391,10 @@ def main():
             deat = INDI_IDS[id_name][5]
             if us01DatesBeforeCurrentDate(deat, id_name, 'INDIVIDUAL', 'Death') != None:
                 print(us01DatesBeforeCurrentDate(deat, id_name, 'INDIVIDUAL', 'Death'))
+
+        if us22UniqueIDs(id_name) != []:
+            for error_message in us22UniqueIDs(id_name):
+                print(error_message)
 
     for id_name in FAM_IDS:
         if FAM_IDS[id_name][0] != 'NA':
@@ -364,6 +417,9 @@ def main():
                 if us10MarriageAfter14(id_name) != []:
                     for error_message in us10MarriageAfter14(id_name):
                         print(error_message)
+                if us21CorrectGenderForRoles(id_name) != []:
+                    for error_message in us21CorrectGenderForRoles(id_name):
+                        print(error_message)
 
         if FAM_IDS[id_name][1] != 'NA':
             div = FAM_IDS[id_name][1]
@@ -378,5 +434,9 @@ def main():
         if FAM_IDS[id_name][6] != 'NA':
             if us15FewerThan15Siblings(id_name) != None:
                 print(us15FewerThan15Siblings(id_name))
+
+        if us22UniqueIDs(id_name) != []:
+            for error_message in us22UniqueIDs(id_name):
+                print(error_message)
 
 if __name__ == '__main__': main()
