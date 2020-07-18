@@ -1,0 +1,84 @@
+People
++-----------------------+-----------------+--------+-------------+-----+-------+-------------+----------------------+------------------------------------------+
+|           ID          |       Name      | Gender |   Birthday  | Age | Alive |    Death    |        Child         |                  Spouse                  |
++-----------------------+-----------------+--------+-------------+-----+-------+-------------+----------------------+------------------------------------------+
+|          I03          |  Talia /Bieber/ |   F    | 24 MAY 2020 |  0  |  True |      NA     | ['US0102101521_F01'] |                    NA                    |
+|          I04          |   Renu /Shin/   |   F    | 15 JAN 2020 |  0  |  True |      NA     |   ['US020910_F04']   |           ['US0204081016_F02']           |
+|          I06          |  Devin /Shine/  |   M    | 17 JUL 2002 |  18 |  True |      NA     | ['US0204081016_F02'] |             ['US021022_F05']             |
+|          I07          |  Dillon /Shin/  |   M    | 17 JUL 2002 |  18 |  True |      NA     | ['US0204081016_F02'] |             ['US021022_F05']             |
+|          I09          | Kalani /Bieber/ |   F    | 14 SEP 2018 |  1  |  True |      NA     | ['US0102081021_F03'] |                    NA                    |
+|          I12          |    Puja /Lal/   |   F    | 26 FEB 1996 |  24 | False | 27 SEP 2019 |   ['US020910_F04']   |                    NA                    |
+|          I16          |  FirstD /LastD/ |   F    | 18 JUN 2020 |  0  |  True |      NA     | ['US0102101521_F01'] |             ['US021022_F05']             |
+|          I17          |  FirstE /LastE/ |   F    | 19 JUN 2020 |  0  |  True |      NA     | ['US0102101521_F01'] |                    NA                    |
+|          I18          |  FirstF /LastF/ |   F    | 20 JUN 2020 |  0  |  True |      NA     | ['US0102101521_F01'] |                    NA                    |
+|          I19          |  FirstG /LastG/ |   F    | 21 JUN 2020 |  0  |  True |      NA     | ['US0102101521_F01'] |                    NA                    |
+|          I20          |  FirstH /LastH/ |   F    | 22 JUN 2020 |  0  |  True |      NA     | ['US0102101521_F01'] |                    NA                    |
+|          I21          |  FirstI /LastI/ |   F    | 23 JUN 2020 |  0  |  True |      NA     | ['US0102101521_F01'] |                    NA                    |
+|          I22          |  FirstJ /LastJ/ |   F    | 24 JUN 2020 |  0  |  True |      NA     | ['US0102101521_F01'] |                    NA                    |
+|          I23          |  FirstK /LastK/ |   F    | 25 JUN 2020 |  0  |  True |      NA     | ['US0102101521_F01'] |                    NA                    |
+|          I24          |  FirstL /LastL/ |   F    | 26 JUN 2020 |  0  |  True |      NA     | ['US0102101521_F01'] |                    NA                    |
+|          I25          |  FirstM /LastM/ |   F    | 27 JUN 2020 |  0  |  True |      NA     | ['US0102101521_F01'] |                    NA                    |
+|          I26          |  FirstN /LastN/ |   F    | 28 JUN 2020 |  0  |  True |      NA     | ['US0102101521_F01'] |                    NA                    |
+|       US0103_I11      |   Tarsem /Lal/  |   M    |  1 JAN 2035 | -15 | False | 26 APR 1995 |          NA          |             ['US020910_F04']             |
+|       US0121_I02      | Justin /Bieber/ |   F    |  1 MAR 2094 | -74 |  True |      NA     |          NA          | ['US0102101521_F01', 'US0102081021_F03'] |
+|       US0121_I08      | Hailey /Bieber/ |   M    | 22 NOV 1996 |  23 | False | 22 AUG 2020 |          NA          |           ['US0102081021_F03']           |
+|        US01_I01       |  Anisha /Shin/  |   F    |  2 AUG 2021 |  -2 |  True |      NA     | ['US0204081016_F02'] |           ['US0102101521_F01']           |
+|        US07_I05       |  HoChul /Shin/  |   M    | 23 SEP 1867 | 152 |  True |      NA     |          NA          |           ['US0204081016_F02']           |
+|        US07_I10       |   Sandra /Lal/  |   F    | 15 JAN 1843 | 177 | False | 30 JUN 2019 |          NA          |             ['US020910_F04']             |
+|        US22_I13       |  FirstA /LastA/ |   F    | 15 JUN 2020 |  0  |  True |      NA     | ['US0102101521_F01'] |                    NA                    |
+| US22_I13-Not Unique 0 |  FirstB /LastB/ |   F    | 16 JUN 2020 |  0  |  True |      NA     | ['US0102101521_F01'] |                    NA                    |
+| US22_I13-Not Unique 1 |  FirstC /LastC/ |   F    | 17 JUN 2020 |  0  |  True |      NA     | ['US0102101521_F01'] |             ['US021022_F05']             |
++-----------------------+-----------------+--------+-------------+-----+-------+-------------+----------------------+------------------------------------------+
+Families
++---------------------------+-------------+-------------+------------+-----------------+------------+-----------------+-----------------------------------------+
+|             ID            |   Married   |   Divorced  | Husband ID |   Husband Name  |  Wife ID   |    Wife Name    |                 Children                |
++---------------------------+-------------+-------------+------------+-----------------+------------+-----------------+-----------------------------------------+
+|      US0102081021_F03     | 13 SEP 2022 |      NA     | US0121_I02 | Justin /Bieber/ | US0121_I08 | Hailey /Bieber/ |                 ['I09']                 |
+|      US0102101521_F01     | 23 MAY 2020 | 27 AUG 2020 | US0121_I02 | Justin /Bieber/ |  US01_I01  |  Anisha /Shin/  |     ['I03', 'US22_I13', 'US22_I13',     |
+|                           |             |             |            |                 |            |                 | 'US22_I13', 'I16', 'I17', 'I18', 'I19', |
+|                           |             |             |            |                 |            |                 |    'I20', 'I21', 'I22', 'I23', 'I24',   |
+|                           |             |             |            |                 |            |                 |              'I25', 'I26']              |
+|      US0204081016_F02     | 29 NOV 1997 | 29 NOV 1995 |  US07_I05  |  HoChul /Shin/  |    I04     |   Renu /Shin/   |        ['US01_I01', 'I06', 'I07']       |
+|        US020910_F04       | 23 OCT 1969 |      NA     | US0103_I11 |   Tarsem /Lal/  |  US07_I10  |   Sandra /Lal/  |              ['I04', 'I12']             |
+|        US021022_F05       | 30 MAY 2020 |      NA     |    I06     |  Devin /Shine/  |  US22_I13  |  FirstA /LastA/ |                    NA                   |
+| US021022_F05-Not Unique 0 |  2 JUL 2020 |      NA     |    I07     |  Dillon /Shin/  |    I16     |  FirstD /LastD/ |                    NA                   |
++---------------------------+-------------+-------------+------------+-----------------+------------+-----------------+-----------------------------------------+
+ERROR: INDIVIDUAL: US01: US01_I01: Birthday 2021-08-02 occurs in the future
+ERROR: INDIVIDUAL: US01: US0121_I02: Birthday 2094-03-01 occurs in the future
+ERROR: INDIVIDUAL: US07: US07_I05: More than 150 years old - Birth date 1867-09-23
+ERROR: INDIVIDUAL: US01: US0121_I08: Death 2020-08-22 occurs in the future
+ERROR: INDIVIDUAL: US07: US07_I10: More than 150 years old - Birth date 1843-01-15
+ERROR: INDIVIDUAL: US07: US07_I10: More than 150 years old at death - Birth 1843-01-15: Death 2019-06-30
+ERROR: INDIVIDUAL: US01: US0103_I11: Birthday 2035-01-01 occurs in the future
+ERROR: INDIVIDUAL: US03: US0103_I11: Died 1995-04-26 before born 2035-01-01
+ERROR: INDIVIDUAL: US22: US22_I13-Not Unique 0: is not unique: The Not Unique indicates this
+ERROR: INDIVIDUAL: US22: US22_I13-Not Unique 1: is not unique: The Not Unique indicates this
+ERROR: FAMILY: US02: US0102101521_F01: Husband's birth date 2094-03-01 after marriage date 2020-05-23
+ERROR: FAMILY: US02: US0102101521_F01: Wife's birth date 2021-08-02 after marriage date 2020-05-23
+ERROR: FAMILY: US10: US0102101521_F01: Husband US0121_I02 not married 2020-05-23 at least 14 years after birth 2094-03-01
+ERROR: FAMILY: US10: US0102101521_F01: Wife US01_I01 not married 2020-05-23 at least 14 years after birth 2021-08-02
+ERROR: FAMILY: US21: US0102101521_F01: husband US0121_I02 is not male
+ERROR: FAMILY: US01: US0102101521_F01: Divorce date 2020-08-27 occurs in the future
+ERROR: FAMILY: US15: US0102101521_F01: There are 15 siblings or more in family
+ERROR: FAMILY: US04: US0204081016_F02: Divorced 1995-11-29 before married 1997-11-29
+ANOMALY: FAMILY: US08: US0204081016_F02: Child US01_I01 born 2021-08-02 after divorce on 1995-11-29
+ANOMALY: FAMILY: US08: US0204081016_F02: Child I06 born 2002-07-17 after divorce on 1995-11-29
+ANOMALY: FAMILY: US08: US0204081016_F02: Child I07 born 2002-07-17 after divorce on 1995-11-29
+ERROR: FAMILY: US02: US0204081016_F02: Wife's birth date 2020-01-15 after marriage date 1997-11-29
+ERROR: FAMILY: US10: US0204081016_F02: Wife I04 not married 1997-11-29 at least 14 years after birth 2020-01-15
+ERROR: FAMILY: US16: US0204081016_F02: Child I06 has a different last name than father
+ERROR: FAMILY: US01: US0102081021_F03: Marriage date 2022-09-13 occurs in the future
+ANOMALY: FAMILY: US08: US0102081021_F03: Child I09 born 2018-09-14 before marriage on 2022-09-13
+ERROR: FAMILY: US02: US0102081021_F03: Husband's birth date 2094-03-01 after marriage date 2022-09-13
+ERROR: FAMILY: US10: US0102081021_F03: Husband US0121_I02 not married 2022-09-13 at least 14 years after birth 2094-03-01
+ERROR: FAMILY: US21: US0102081021_F03: husband US0121_I02 is not male
+ERROR: FAMILY: US21: US0102081021_F03: wife US0121_I08 is not female
+ERROR: FAMILY: US09: US020910_F04: Child I04 born 2020-01-15 more than 9 months after death of father 1995-04-26
+ERROR: FAMILY: US09: US020910_F04: Child I04 born 2020-01-15 after death of mother 2019-06-30
+ERROR: FAMILY: US09: US020910_F04: Child I12 born 1996-02-26 more than 9 months after death of father 1995-04-26
+ERROR: FAMILY: US02: US020910_F04: Husband's birth date 2035-01-01 after marriage date 1969-10-23
+ERROR: FAMILY: US10: US020910_F04: Husband US0103_I11 not married 1969-10-23 at least 14 years after birth 2035-01-01
+ERROR: FAMILY: US02: US021022_F05: Wife's birth date 2020-06-15 after marriage date 2020-05-30
+ERROR: FAMILY: US10: US021022_F05: Wife US22_I13 not married 2020-05-30 at least 14 years after birth 2020-06-15
+ERROR: FAMILY: US10: US021022_F05-Not Unique 0: Wife I16 not married 2020-07-02 at least 14 years after birth 2020-06-18
+ERROR: FAMILY: US22: US021022_F05-Not Unique 0: is not unique: The Not Unique indicates this
