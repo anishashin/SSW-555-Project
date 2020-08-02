@@ -364,7 +364,7 @@ def us22UniqueIDs(id_name):
     return error_messages
 
 def us23UniqueNameAndBirthDate(id_name):
-    '''Returns an error message if there is more than one individual with the sanme name and birth date'''
+    '''Returns an error message if there is more than one individual with the same name and birth date'''
     error_messages = []
     people = []
     for id in INDI_IDS.keys():
@@ -413,11 +413,6 @@ def us29ListDeceased():
                     deceased.append([name, death_date])
                     error_messages.append('Name: ' + str(name) + ' Death: ' + str(death_date))
     return error_messages
-    # print("US29: The Following Individuals are deceased:")
-    # for person in deceased:
-    #     print("Name: " + str(person[0]) + " Death: " + str(person[1]))
-    # print(" ")
-
 
 def main():
     readFile(INPUT_FILE)
